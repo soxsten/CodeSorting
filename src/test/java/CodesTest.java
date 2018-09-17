@@ -59,6 +59,7 @@ public class CodesTest {
         result.add("K1\\SK1\\SSK1");
         result.add("K1\\SK1\\SSK2");
         result.add("K1\\SK2");
+
         result.add("K2");
         result.add("K2\\SK1");
         result.add("K2\\SK1\\SSK1");
@@ -74,6 +75,7 @@ public class CodesTest {
         result.add("K2\\SK1");
         result.add("K2\\SK1\\SSK2");
         result.add("K2\\SK1\\SSK1");
+
         result.add("K1");
         result.add("K1\\SK2");
         result.add("K1\\SK1");

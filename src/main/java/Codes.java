@@ -15,6 +15,22 @@ class Codes {
         Set<String> result = new HashSet<>(codes);
         Set<String> uniqueCodes = new HashSet<>();
 
+        getMissedUnit(uniqueCodes);
+        result.addAll(uniqueCodes);
+
+        List<String> sortedList = new ArrayList<>(result);
+        Collections.sort(sortedList);
+
+        return sortedList;
+    }
+
+    List<String> sortToDown() {
+
+
+        return null;
+    }
+
+    private void getMissedUnit(Set<String> uniqueCodes) {
         for (String code : codes) {
             String[] split = code.split(PATTERN);
 
@@ -30,41 +46,12 @@ class Codes {
                     unitName.append(split[i]);
 
                     if (i < size - 1) {
-                        unitName.append("\\");
+                        unitName.append(PATTERN);
                     }
                 }
 
                 uniqueCodes.add(unitName.toString());
             }
         }
-
-        result.addAll(uniqueCodes);
-
-        List<String> sortedList = new ArrayList<>(result);
-        Collections.sort(sortedList);
-
-        return sortedList;
-    }
-
-    List<String> sortToDown() {
-        List<String> codes = sortToUp();
-        Collections.reverse(codes);
-
-        List<String> result = new ArrayList<>();
-
-        List<String> block = new ArrayList<>();
-        for (String code : codes) {
-
-            String[] split = code.split(PATTERN);
-            if (split.length == 1) {
-                block.add(code);
-                break;
-
-            } else {
-                block.add(code);
-            }
-        }
-
-        return codes;
     }
 }
