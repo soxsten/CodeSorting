@@ -4,76 +4,67 @@ import java.util.regex.Pattern;
 class Codes {
 
     private static final String PATTERN = "\\";
-    private Set<String> codes = new HashSet<>();
 
-    void addCodes(Set<String> codes) {
-        this.codes.addAll(codes);
+    List<String> sortToUp(Set<String> unsortedCodes) {
+
+        getMissedUnitFor(unsortedCodes);
+
+        List<String> sortedCodes = new ArrayList<>(unsortedCodes);
+        Collections.sort(sortedCodes);
+
+        return sortedCodes;
     }
 
-    List<String> sortToUp() {
+    List<String> sortToDown(Set<String> unsortedCodes) {
 
-        Set<String> result = new HashSet<>(codes);
-        Set<String> uniqueCodes = new HashSet<>();
+        getMissedUnitFor(unsortedCodes);
+        List<List<String>> splittedCodes = new ArrayList<>();
 
-        getMissedUnit(uniqueCodes);
-        result.addAll(uniqueCodes);
+//        Разбиваем по листам
+        for (String code : unsortedCodes) {
+            String[] split = code.split(Pattern.quote(PATTERN));
 
-        List<String> sortedList = new ArrayList<>(result);
-        Collections.sort(sortedList);
+            while (splittedCodes.size() < split.length) {
+                splittedCodes.add(new ArrayList<>());
+            }
 
-        return sortedList;
-    }
+            List<String> part = splittedCodes.get(split.length - 1);
+            part.add(code);
+        }
 
-    List<String> sortToDown() {
+//        Сортируем в каждом листе
+        for (List<String> list : splittedCodes) {
+            Collections.sort(list);
+            Collections.reverse(list);
+        }
 
-        Set<String> result = new HashSet<>(codes);
-        Set<String> uniqueCodes = new HashSet<>();
+        List<String> reverseOrder = new ArrayList<>();
+        if (splittedCodes.size() > 1) {
+            List<String> firstList = splittedCodes.get(0);
 
-        getMissedUnit(uniqueCodes);
-        result.addAll(uniqueCodes);
+            for (String unitFromFirstList : firstList) {
+                reverseOrder.add(unitFromFirstList);
 
-        List<String> sortedList = new ArrayList<>(result);
-        Collections.sort(sortedList);
-        Collections.reverse(sortedList);
+                for (int j = 1; j < splittedCodes.size(); j++) {
+                    List<String> nextList = splittedCodes.get(j);
 
-        List<String> reversedList = new ArrayList<>();
-        List<String> block = new LinkedList<>();
-        for (int i = 1; i < sortedList.size() - 1; i++) {
-            String currentUnit = sortedList.get(i);
-            String[] partsOfCurrentUnit = currentUnit.split(Pattern.quote(PATTERN));
+                    for (String unitFromNextList : nextList) {
+                        String[] split = unitFromNextList.split(Pattern.quote(PATTERN));
 
-            String previousUnit = sortedList.get(i - 1);
-            String[] partsOfPreviousUnit = previousUnit.split(Pattern.quote(PATTERN));
-
-            if (partsOfCurrentUnit.length == partsOfPreviousUnit.length) {
-                block.add(previousUnit);
-
-                if (i == sortedList.size() - 2) {
-                    block.add(currentUnit);
-                    Collections.reverse(block);
-                    reversedList.addAll(block);
-                }
-
-            } else {
-                if (!block.isEmpty()) {
-                    addReversedBlock(reversedList, block);
-                }
-
-                block.add(previousUnit);
-                addReversedBlock(reversedList, block);
-
-                if (i == sortedList.size() - 2) {
-                    reversedList.add(previousUnit);
-                    reversedList.add(currentUnit);
+                        if (unitFromFirstList.equals(split[0])) {
+                            reverseOrder.add(unitFromNextList);
+                        }
+                    }
                 }
             }
         }
 
-        return reversedList;
+        return reverseOrder;
     }
 
-    private void getMissedUnit(Set<String> uniqueCodes) {
-        for (String code : codes) {
+    private void getMissedUnitFor(Set<String> unsortedCodes) {
+        Set<String> uniqueCodes = new HashSet<>();
+        for (String code : unsortedCodes) {
             String[] split = code.split(Pattern.quote(PATTERN));
 
             if (split.length == 1) {
@@ -95,11 +86,7 @@ class Codes {
                 uniqueCodes.add(unitName.toString());
             }
         }
-    }
 
-    private void addReversedBlock(List<String> reversedList, List<String> block) {
-        Collections.reverse(block);
-        reversedList.addAll(block);
-        block.clear();
+        unsortedCodes.addAll(uniqueCodes);
     }
 }

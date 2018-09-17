@@ -27,11 +27,10 @@ public class CodesTest {
     public void sortUp() {
         //given
         Codes codes = new Codes();
-        codes.addCodes(this.codes);
         List<String> expected = getUpList();
 
         //when
-        List<String> actual = codes.sortToUp();
+        List<String> actual = codes.sortToUp(this.codes);
 
         //then
         Assert.assertEquals(expected, actual);
@@ -41,11 +40,10 @@ public class CodesTest {
     public void sortDown() {
         //given
         Codes codes = new Codes();
-        codes.addCodes(this.codes);
         List<String> expected = getDownList();
 
         //when
-        List<String> actual = codes.sortToDown();
+        List<String> actual = codes.sortToDown(this.codes);
 
         //then
         Assert.assertEquals(expected, actual);
