@@ -2,10 +2,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CodesTest {
 
@@ -24,7 +21,7 @@ public class CodesTest {
     }
 
     @Test
-    public void sortUp() {
+    public void sortUp_should_return_expected_list() {
         //given
         Codes codes = new Codes();
         List<String> expected = getUpList();
@@ -37,13 +34,26 @@ public class CodesTest {
     }
 
     @Test
-    public void sortDown() {
+    public void sortDown_should_return_expected_list() {
         //given
         Codes codes = new Codes();
         List<String> expected = getDownList();
 
         //when
         List<String> actual = codes.sortToDown(this.codes);
+
+        //then
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getMissedUnitFor_should_return_expected_list() {
+        //given
+        Codes codes = new Codes();
+        List<String> expected = expectedList();
+
+        //when
+        List<String> actual = codes.sortToUp(getString());
 
         //then
         Assert.assertEquals(expected, actual);
@@ -81,5 +91,23 @@ public class CodesTest {
         result.add("K1\\SK1\\SSK1");
 
         return result;
+    }
+
+    private Set<String> getString() {
+        Set<String> result = new HashSet<>();
+        result.add("k1\\sk1\\sk2\\sk3\\sk4");
+        return result;
+    }
+
+    private List<String> expectedList() {
+        List<String> expectedList = new ArrayList<>();
+
+        expectedList.add("k1");
+        expectedList.add("k1\\sk1");
+        expectedList.add("k1\\sk1\\sk2");
+        expectedList.add("k1\\sk1\\sk2\\sk3");
+        expectedList.add("k1\\sk1\\sk2\\sk3\\sk4");
+
+        return expectedList;
     }
 }

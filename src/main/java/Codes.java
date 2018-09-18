@@ -72,18 +72,15 @@ class Codes {
                 uniqueCodes.add(firstPart);
 
             } else {
-                int size = split.length - 1;
-                StringBuilder unitName = new StringBuilder();
 
-                for (int i = 0; i < size; i++) {
-                    unitName.append(split[i]);
-
-                    if (i < size - 1) {
-                        unitName.append(PATTERN);
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < split.length; i++) {
+                    if (i != 0) {
+                        builder.append(PATTERN);
                     }
+                    builder.append(split[i]);
+                    uniqueCodes.add(builder.toString());
                 }
-
-                uniqueCodes.add(unitName.toString());
             }
         }
 
