@@ -34,8 +34,7 @@ class Codes {
 
 //        Сортируем в каждом листе
         for (List<String> list : splittedCodes) {
-            Collections.sort(list);
-            Collections.reverse(list);
+            list.sort(Comparator.reverseOrder());
         }
 
         List<String> reverseOrder = new ArrayList<>();
@@ -67,20 +66,15 @@ class Codes {
         for (String code : unsortedCodes) {
             String[] split = code.split(Pattern.quote(PATTERN));
 
-            if (split.length == 1) {
-                String firstPart = split[0];
-                uniqueCodes.add(firstPart);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < split.length; i++) {
 
-            } else {
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < split.length; i++) {
-                    if (i != 0) {
-                        builder.append(PATTERN);
-                    }
-                    builder.append(split[i]);
-                    uniqueCodes.add(builder.toString());
+                if (i != 0) {
+                    builder.append(PATTERN);
                 }
+
+                builder.append(split[i]);
+                uniqueCodes.add(builder.toString());
             }
         }
 
